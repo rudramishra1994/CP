@@ -1,12 +1,20 @@
 class Solution {
     public boolean uniqueOccurrences(int[] arr) {
-        int [] freqArray = new int [2001];
-        for(int i : arr) freqArray[i+1000]++;
-        Set<Integer> unique  = new HashSet<>();
-        for(int i : freqArray){
-            if(i > 0 && unique.contains(i)) return false;
-            else unique.add(i);
+        Map<Integer,Integer> mp = new HashMap<>();
+        for(int i : arr) {
+            if(!mp.containsKey(i)) mp.put(i,1);
+            else {
+                int val = mp.get(i);
+                mp.put(i,val+1);
+            }
         }
+        Set<Integer> set = new HashSet<>();
+        for(int i : mp.values()) {
+            if(set.contains(i)) return false;
+            set.add(i);
+        }
+
         return true;
+
     }
 }
