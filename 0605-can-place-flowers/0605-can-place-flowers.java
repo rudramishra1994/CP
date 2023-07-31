@@ -1,7 +1,7 @@
 class Solution {
     public boolean canPlaceFlowers(int[] flowerbed, int n) {
         int m = flowerbed.length;
-        if(n==0 || (m==1 && flowerbed[0]==0)) return true;
+        if(n==0 || (m==1 && n<=1 && flowerbed[0]==0)) return true;
         for(int i = 0; i < m && n > 0; i++ ){
 
             if(flowerbed[i] ==0){
