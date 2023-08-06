@@ -26,12 +26,6 @@ class Solution {
             }
         }
         return dp[text1.length()][text2.length()];
-
-    }
-    private int LCS(char [] text1,char [] text2,int index1,int index2){
-        if(index1 > text1.length-1 || index2 > text2.length-1) return 0;
-        if(text1[index1] == text2[index2]) return 1 + LCS(text1,text2,index1+1,index2+1);
-        return Math.max(LCS(text1,text2,index1+1,index2),LCS(text1,text2,index1,index2+1));
     }
 }
 
