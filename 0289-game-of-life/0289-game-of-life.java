@@ -1,6 +1,7 @@
 class Solution {
     public void gameOfLife(int[][] board) {
         int [][] dirs = {{-1,0},{1,1},{0,1},{-1,1},{1,0},{1,-1},{0,-1},{-1,-1}};
+        Set<Integer> alive = new HashSet<>(Arrays.asList(1,999,-999));
         int n = board.length;
         int m = board[0].length;
         for(int i = 0; i < n ; i++){
@@ -9,7 +10,7 @@ class Solution {
                 for(int [] dir : dirs){
                         int nextX = i+dir[0];
                         int nextY = j+dir[1];
-                        if(isValid(nextX,nextY,n,m) && isAlive(board[nextX][nextY])) count++;
+                        if((0<=nextX && nextX < n && 0<=nextY && nextY < m) && alive.contains(board[nextX][nextY])) count++;
                 }
                 if(board[i][j] == 1 && (count < 2 || count > 3)) board[i][j] = -999;
                 else if(board[i][j] == 1 && count <= 3) board[i][j] = 999;
