@@ -8,7 +8,7 @@ class Solution {
             if(!mp.containsKey(currChar)) {
                     if(mp.containsValue(t.charAt(i))) return false;
                     else mp.put(currChar,t.charAt(i));
-            }else if (mp.containsKey(currChar)){
+            }else{
                if(mp.get(currChar) != t.charAt(i)) return false;
             }
 
