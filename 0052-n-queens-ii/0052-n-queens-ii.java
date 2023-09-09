@@ -2,7 +2,7 @@ class Solution {
     int dim;
     public int totalNQueens(int n) {
         this.dim = n;
-        return backtrack(n,0, new LinkedHashSet<>(), new HashSet<>(), new HashSet<>());
+        return backtrack(n,0, new HashSet<>(), new HashSet<>(), new HashSet<>());
 
     }
  
