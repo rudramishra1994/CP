@@ -16,8 +16,9 @@ class Solution {
                     dp[i] = Math.max(dp[i],dp[j]+1);
                     
                 }
-                maxLIS = Integer.max(maxLIS,dp[i]);
+                
             }
+            maxLIS = Integer.max(maxLIS,dp[i]);
         }
         return maxLIS;
 
