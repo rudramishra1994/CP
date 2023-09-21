@@ -6,7 +6,7 @@ class Solution {
         // for(int [] row : dp) Arrays.fill(row,-1);
         // return solve(nums,0,-1);
 
-        int [] dp = new int [n+1];
+        int [] dp = new int [n];
         int maxLIS = 1;
         dp[0] = 0;
         Arrays.fill(dp,1);
@@ -14,7 +14,6 @@ class Solution {
             for(int j = 0; j <i ; j++ ){
                 if(nums[i] > nums[j]){
                     dp[i] = Math.max(dp[i],dp[j]+1);
-                    
                 }
                 
             }
