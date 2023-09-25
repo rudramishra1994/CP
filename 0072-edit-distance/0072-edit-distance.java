@@ -1,37 +1,25 @@
-
-
-/**
-    Pure recursion gives TLE as usual
- */
 class Solution {
+
+    int [][] dp;
     public int minDistance(String word1, String word2) {
-        //return findDistance(word1,word2,word1.length()-1,word2.length()-1);
-        int n = word1.length();
-        int m = word2.length();
-        if(n==0) return m;
-        if(m==0) return n;
+        if(word1.length() == 0) return word2.length();
+        if(word2.length() == 0) return word1.length();
+        dp = new int [word1.length()][word2.length()];
+        for(int [] row : dp) Arrays.fill(row,-1);
+        return backtrack(0,0,word1,word2);
+    }
 
-        int [][] dp = new int [n+1][m+1];
-        for(int i = 1 ; i <=m;i++) dp[0][i] = i;
-        for(int i = 1 ; i <=n;i++) dp[i][0] = i;
+    public int backtrack(int w1, int w2,String word1,String word2){
+        if(w2 >=word2.length()) return word1.length() - w1;
+        if(w1 >=word1.length()) return word2.length() - w2;
+        if(dp[w1][w2] !=-1) return dp[w1][w2];
+        if(word1.charAt(w1) == word2.charAt(w2)) return dp[w1][w2] =  backtrack(w1+1,w2+1,word1,word2);
+        else {
+            int replace = 1 + backtrack(w1+1,w2+1,word1,word2);
+            int delete = 1 + backtrack(w1+1,w2,word1,word2);
+            int insert = 1 + backtrack(w1,w2+1,word1,word2);
 
-
-        for(int i= 1; i <=n ; i++){
-            for(int j = 1 ; j <=m ; j++){
-                if(word1.charAt(i-1) == word2.charAt(j-1)) dp[i][j] = dp[i-1][j-1];
-                else dp[i][j] = Math.min(1+dp[i-1][j-1],Math.min(1+dp[i][j-1],1+dp[i-1][j]));
-            }
+            return dp[w1][w2] = Math.min(replace,Math.min(delete,insert));
         }
-        return dp[n][m];
-   }
-
-    private int findDistance(String word1,String word2,int index1, int index2) {
-        if(index1 < 0 && index2 >=0) return 1+findDistance(word1,word2,index1,index2-1);
-        if(index1 >=0 && index2 < 0) return 1+findDistance(word1,word2,index1-1,index2);
-        if(index1 < 0 && index2 < 0) return 0;
-        if(word1.charAt(index1) == word2.charAt(index2)) return findDistance(word1,word2,index1-1,index2-1);
-        return Math.min(1+findDistance(word1,word2,index1-1,index2-1),
-                Math.min(1+findDistance(word1,word2,index1,index2-1), 1 + findDistance(word1,word2,index1-1,index2)));
-
     }
 }
