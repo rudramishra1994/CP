@@ -6,7 +6,8 @@ class Solution {
         int minTillNow = prices[0],maxTillNow = prices[n];
         for(int price : prices){
             if(minTillNow > price) minTillNow = price;
-            maxProfit = Math.max(maxProfit,price-minTillNow);
+            if(maxProfit < price - minTillNow)
+            maxProfit = price-minTillNow;
         }
         return maxProfit;
        
