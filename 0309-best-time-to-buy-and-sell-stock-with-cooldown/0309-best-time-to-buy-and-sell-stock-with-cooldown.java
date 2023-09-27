@@ -1,21 +1,42 @@
-
-/**
-    Pure recursion gives TLE;
- */
 class Solution {
-    int [][] dp = new int [5001][2];
+    int dp[][];
     public int maxProfit(int[] prices) {
-        for(int [] arr : dp) Arrays.fill(arr,-1);
-        return findMaxProfit(prices,0,true);
-        
+        dp = new int [prices.length][2];
+        for(int [] row : dp) Arrays.fill(row,-1);
+        //return solve(prices,0,-1);
+        return topDownDp(prices,0,-1);
     }
 
-    private int findMaxProfit(int []prices, int day ,boolean cooldown){
-        if(day >= prices.length)  return 0;
-        int k = cooldown ? 1 : 0;
-        if(dp[day][k] != -1) return dp[day][k];
-        if(cooldown) return dp[day][k] = Math.max(findMaxProfit(prices,day+1,false)-prices[day],findMaxProfit(prices,day+1,true));
-        else return dp[day][k] = Math.max(findMaxProfit(prices,day+2,true)+prices[day],findMaxProfit(prices,day+1,false));
+    private int solve(int [] prices,int day,int buy){
+        if(day >= prices.length) return 0;
+        
+        int p1 = 0, p2 = 0;
+        if(buy == -1){//currently holding no stocks
+            p1 = solve(prices,day+1,prices[day]) - prices[day];
+        }else{
+            p1 = solve(prices,day+2,-1) + prices[day];
+        }
+
+        p2 = solve(prices,day+1,buy);
+
+        return Math.max(p1,p2);
+
+    }
+
+    private int topDownDp(int [] prices,int day,int buy){
+        if(day >= prices.length) return 0;
+        int status = buy == -1 ? 0 : 1;
+        if(dp[day][status]!=-1) return dp[day][status];
+        int p1 = 0, p2 = 0;
+        if(buy == -1){//currently holding no stocks
+            p1 = topDownDp(prices,day+1,prices[day]) - prices[day];
+        }else{
+            p1 = topDownDp(prices,day+2,-1) + prices[day];
+        }
+
+        p2 = topDownDp(prices,day+1,buy);
+
+        return dp[day][status] = Math.max(p1,p2);
 
     }
 }
