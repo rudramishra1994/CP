@@ -11,7 +11,8 @@ class Solution {
             }
         }
         //return backtrack(prices,0,-1,0);
-        return topDownDP(prices,0,-1,0);
+        //return topDownDP(prices,0,-1,0);
+        return bottomUpDP(prices);
         
     }
 
@@ -51,6 +52,45 @@ class Solution {
         return dp[day][status][transaction] = Math.max(p1,p2);
 
     }
+
+    private int bottomUpDP(int [] prices){
+        
+        int n = prices.length;
+        int[][][] dp = new int[n][2][3];
+
+        // Initialization
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < 2; j++) {
+                for (int k = 0; k < 3; k++) {
+                    dp[i][j][k] = Integer.MIN_VALUE;
+                }
+            }
+        }
+        dp[0][0][0] = 0;
+        dp[0][1][0] = -prices[0];
+
+        // Bottom-up DP
+        for (int i = 1; i < n; i++) {
+            for (int t = 0; t < 3; t++) {
+                // Not holding a stock
+                dp[i][0][t] = dp[i - 1][0][t];
+                if (t > 0 && dp[i - 1][1][t - 1] != Integer.MIN_VALUE) {
+                    dp[i][0][t] = Math.max(dp[i][0][t], dp[i - 1][1][t - 1] + prices[i]);
+                }
+
+                // Holding a stock
+                dp[i][1][t] = dp[i - 1][1][t];
+                if (dp[i - 1][0][t] != Integer.MIN_VALUE) {
+                    dp[i][1][t] = Math.max(dp[i][1][t], dp[i - 1][0][t] - prices[i]);
+                }
+            }
+        }
+
+        // The answer is the maximum profit on the last day, having performed at most 2 transactions
+        return Math.max(dp[n - 1][0][0], Math.max(dp[n - 1][0][1], dp[n - 1][0][2]));
+    }
+
+    
 
 
 
