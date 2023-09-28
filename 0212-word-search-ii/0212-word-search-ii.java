@@ -7,7 +7,8 @@ class Solution {
         Set<String> ans = new HashSet<>();
         for(int i = 0 ; i < board.length;i++)
             for(int j = 0 ; j < board[0].length;j++)
-                backtrack(board,i,j,root,new StringBuilder (),ans);
+                //backtrack(board,i,j,root,new StringBuilder (),ans);
+                backtrack2(board,i,j,root,ans);
         return new ArrayList<>(ans);
 
         
@@ -31,6 +32,24 @@ class Solution {
         if(node.children[c-'a'].isLeaf()) node.children[c-'a'] = null;
     }
 
+
+      private void backtrack2(char [][] board,int x,int y,TrieNode node,Set<String> ans){
+        if(x < 0 || y < 0 || x >=board.length || y >=board[0].length || board[x][y] =='*') return ;
+        char c = board[x][y];
+        if(node.children[c-'a']==null) return;
+        if(node.children[c-'a'].isEndNode){
+            ans.add(node.children[c-'a'].word);
+        }
+        int [][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+        board[x][y] = '*';
+        for(int [] dir : dirs){
+            backtrack2(board,x+dir[0],y+dir[1],node.children[c-'a'],ans);
+        }
+        board[x][y] = c;
+        if(node.children[c-'a'].isLeaf()) node.children[c-'a'] = null;
+    }
+
+
     private void createTrie(String [] words){
         root = new TrieNode();
         for(String word : words){
@@ -42,10 +61,12 @@ class Solution {
     private class TrieNode{
         boolean isEndNode;
         TrieNode [] children;
+        String word;
 
         TrieNode(){
             isEndNode = false;
             children = new TrieNode[26];
+            word = null;
         }
         boolean isLeaf(){
             for(int i = 0 ; i < 26;i++){
@@ -63,6 +84,7 @@ class Solution {
             tempNode = tempNode.children[c-'a'];
         }
         tempNode.isEndNode = true;
+        tempNode.word = word;
     }
 
     // private boolean isPresent(String word){
