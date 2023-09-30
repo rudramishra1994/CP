@@ -21,7 +21,7 @@ class Solution {
                 s_freq.put(c,count+1);
                 
             }
-            if(windowLen >=t.length()){ 
+            if(windowLen ==t.length()){ 
                 while(windowLen >=t.length() /*&& isWindowValid(s_freq,t_freq)*/){
                     if(minStrLen >= left-start+1){
                         minStrLen = left - start +1;
@@ -46,11 +46,4 @@ class Solution {
 
     }
 
-    private boolean isWindowValid(Map<Character,Integer> s_freq , Map<Character,Integer> t_freq){
-        
-        for(char c : t_freq.keySet()){
-            if( !(s_freq.containsKey(c) && t_freq.get(c) <=s_freq.get(c))) return false;
-        }
-        return true;
-    }
 } 
