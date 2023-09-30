@@ -16,11 +16,13 @@ class Solution {
             char c = s.charAt(left);
             if(t_freq.containsKey(c)) {
                 int count = s_freq.getOrDefault(c,0);
+                if(count < t_freq.get(c))
+                    windowLen++;
                 s_freq.put(c,count+1);
-                windowLen++;
+                
             }
             if(windowLen >=t.length()){ 
-                while(windowLen >=t.length() && isWindowValid(s_freq,t_freq)){
+                while(windowLen >=t.length() /*&& isWindowValid(s_freq,t_freq)*/){
                     if(minStrLen >= left-start+1){
                         minStrLen = left - start +1;
                         ans[0] = start;
@@ -31,7 +33,8 @@ class Solution {
                     if(s_freq.containsKey(ch)){
                         int count  = s_freq.get(ch);
                         s_freq.put(ch,count-1);
-                        windowLen--;
+                        if(count <=t_freq.get(ch))
+                            windowLen--;
                         if(s_freq.get(ch)==0) s_freq.remove(ch);
                     }
                 }
