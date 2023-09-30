@@ -20,7 +20,7 @@ class Solution {
                 windowLen++;
             }
             if(windowLen >=t.length()){ 
-                while(isWindowValid(s_freq,t_freq)){
+                while(windowLen >=t.length() && isWindowValid(s_freq,t_freq)){
                     if(minStrLen >= left-start+1){
                         minStrLen = left - start +1;
                         minStr = s.substring(start,left+1);
