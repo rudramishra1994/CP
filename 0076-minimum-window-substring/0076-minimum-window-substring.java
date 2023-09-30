@@ -3,7 +3,7 @@ class Solution {
         if(t.length() > s.length()) return "";
         Map<Character,Integer> s_freq = new HashMap<>();
         Map<Character,Integer> t_freq = new HashMap<>();
-        String minStr = "";int minStrLen = s.length();
+        int []ans = new int [2];int minStrLen = s.length();
         int windowLen = 0;
 
         for(char c : t.toCharArray()){
@@ -23,8 +23,9 @@ class Solution {
                 while(windowLen >=t.length() && isWindowValid(s_freq,t_freq)){
                     if(minStrLen >= left-start+1){
                         minStrLen = left - start +1;
-                        minStr = s.substring(start,left+1);
-                        if(minStrLen == t.length()) return minStr;
+                        ans[0] = start;
+                        ans[1] = left+1;
+                        if(minStrLen == t.length()) return s.substring(ans[0],ans[1]);
                     }
                     char ch = s.charAt(start++);
                     if(s_freq.containsKey(ch)){
@@ -38,7 +39,7 @@ class Solution {
             }
             left++;
         }
-        return minStr;
+        return s.substring(ans[0],ans[1]);
 
     }
 
