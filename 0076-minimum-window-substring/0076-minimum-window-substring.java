@@ -4,6 +4,7 @@ class Solution {
         Map<Character,Integer> s_freq = new HashMap<>();
         Map<Character,Integer> t_freq = new HashMap<>();
         String minStr = "";int minStrLen = s.length();
+        int windowLen = 0;
 
         for(char c : t.toCharArray()){
             t_freq.put(c,t_freq.getOrDefault(c,0)+1);
@@ -16,8 +17,9 @@ class Solution {
             if(t_freq.containsKey(c)) {
                 int count = s_freq.getOrDefault(c,0);
                 s_freq.put(c,count+1);
+                windowLen++;
             }
-            if(left-start+1 >=t.length()){ 
+            if(windowLen >=t.length()){ 
                 while(isWindowValid(s_freq,t_freq)){
                     if(minStrLen >= left-start+1){
                         minStrLen = left - start +1;
@@ -28,6 +30,7 @@ class Solution {
                     if(s_freq.containsKey(ch)){
                         int count  = s_freq.get(ch);
                         s_freq.put(ch,count-1);
+                        windowLen--;
                         if(s_freq.get(ch)==0) s_freq.remove(ch);
                     }
                 }
