@@ -18,11 +18,11 @@ class Solution {
             char ch = s.charAt(left);
             if(left == n) return res + rD.get(ch);
             char next = s.charAt(left+1);
-            if(ch == 'M' || ch == 'D' || ch == 'V' || ch == 'L') {
-                res+=rD.get(ch);
-                left++;
-                continue;
-            }
+            // if(ch == 'M' || ch == 'D' || ch == 'V' || ch == 'L') {
+            //     res+=rD.get(ch);
+            //     left++;
+            //     continue;
+            // }
             if(rD.get(ch) < rD.get(next)) {
                 res+=rD.get(next) - rD.get(ch);
                 left = left+2;
