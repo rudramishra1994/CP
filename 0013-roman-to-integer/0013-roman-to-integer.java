@@ -23,7 +23,7 @@ class Solution {
                 left++;
                 continue;
             }
-            if(nBor.get(ch).contains(next)) {
+            if(rD.get(ch) < rD.get(next)) {
                 res+=rD.get(next) - rD.get(ch);
                 left = left+2;
                 continue;
