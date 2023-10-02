@@ -17,7 +17,7 @@ class Solution {
             adj.get(edge[0]).add(edge[1]);
             adj.get(edge[1]).add(edge[0]);
         }
-        List<Integer> leaves = new LinkedList<>();
+        List<Integer> leaves = new ArrayList<>();
         for(int key : adj.keySet()){
             if(adj.get(key).size() ==1) leaves.add(key);
         }
@@ -25,7 +25,7 @@ class Solution {
         int numberOfNodes = n;
         while(numberOfNodes > 2){
             numberOfNodes-=leaves.size();
-            List<Integer> nextLayer = new LinkedList<>();
+            List<Integer> nextLayer = new ArrayList<>();
             for(int leaf : leaves){
                 int neighbor = adj.get(leaf).iterator().next();
                 adj.get(neighbor).remove(leaf);
