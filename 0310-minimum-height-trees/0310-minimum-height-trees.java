@@ -3,39 +3,52 @@ class Solution {
     // continue trimming leaf nodes till the till <=2 nodes remain
     // maximum 2 centroids possible in a tree
     public List<Integer> findMinHeightTrees(int n, int[][] edges) {
-        if(n < 2){
+         if (n < 2) {
             List<Integer> ans = new ArrayList<>();
-            for(int i = 0 ; i < n ; i++){
+            for (int i = 0; i < n; i++) {
                 ans.add(i);
             }
             return ans;
         }
-        Map<Integer,Set<Integer>> adj = new HashMap<>();
-        for(int [] edge : edges){
-            adj.putIfAbsent(edge[0],new HashSet<>());
-            adj.putIfAbsent(edge[1],new HashSet<>());
-            adj.get(edge[0]).add(edge[1]);
-            adj.get(edge[1]).add(edge[0]);
+        
+        List<Integer>[] adj = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            adj[i] = new ArrayList<>();
         }
+        
+        int[] degree = new int[n];
+        
+        for (int[] edge : edges) {
+            int u = edge[0], v = edge[1];
+            adj[u].add(v);
+            adj[v].add(u);
+            degree[u]++;
+            degree[v]++;
+        }
+        
         List<Integer> leaves = new ArrayList<>();
-        for(int key : adj.keySet()){
-            if(adj.get(key).size() ==1) leaves.add(key);
+        for (int i = 0; i < n; i++) {
+            if (degree[i] == 1) {
+                leaves.add(i);
+            }
         }
         
         int numberOfNodes = n;
-        while(numberOfNodes > 2){
-            numberOfNodes-=leaves.size();
+        while (numberOfNodes > 2) {
+            numberOfNodes -= leaves.size();
             List<Integer> nextLayer = new ArrayList<>();
-            for(int leaf : leaves){
-                int neighbor = adj.get(leaf).iterator().next();
-                adj.get(neighbor).remove(leaf);
-                if(adj.get(neighbor).size() == 1) nextLayer.add(neighbor);
+            for (int leaf : leaves) {
+                int neighbor = adj[leaf].get(0);
+                adj[leaf].remove(0);
+                adj[neighbor].remove((Integer) leaf);
+                degree[neighbor]--;
+                if (degree[neighbor] == 1) {
+                    nextLayer.add(neighbor);
+                }
             }
-            
             leaves = nextLayer;
-           
         }
-
+        
         return leaves;
     }
 }
