@@ -1,51 +1,47 @@
-class Pair {
-    int time;
-    String web;
-    public Pair(int time, String web) {
-        this.time = time;
-        this.web = web;
-    }
-}
 class Solution {
     public List<String> mostVisitedPattern(String[] username, int[] timestamp, String[] website) {
-        Map<String, List<Pair>> map = new HashMap<>();
         int n = username.length;
-        // collect the website info for every user, key: username, value: (timestamp, website)
-        for (int i = 0; i < n; i++) {
-            map.putIfAbsent(username[i], new ArrayList<>());
-            map.get(username[i]).add(new Pair(timestamp[i], website[i]));
+        Map<String, List<Pair<String,Integer>>> mp = new HashMap<>();
+        for(int i = 0 ; i < n ; i++){
+            mp.putIfAbsent(username[i],new ArrayList<>());
+            mp.get(username[i]).add(new Pair<>(website[i],timestamp[i]));
         }
-        // count map to record every 3 combination occuring time for the different user.
-        Map<String, Integer> count = new HashMap<>();
-        String res = "";
-        for (String key : map.keySet()) {
-            Set<String> set = new HashSet<>();
-            // this set is to avoid visit the same 3-seq in one user
-            List<Pair> list = map.get(key);
-            Collections.sort(list, (a, b)->(a.time - b.time)); // sort by time
-            // brutal force O(N ^ 3)
-            for (int i = 0; i < list.size(); i++) {
-                for (int j = i + 1; j < list.size(); j++) {
-                    for (int k = j + 1; k < list.size(); k++) {
-                        String str = list.get(i).web + " " + list.get(j).web + " " + list.get(k).web;
-                        if (!set.contains(str)) {
-                            count.put(str, count.getOrDefault(str, 0) + 1);
-                            set.add(str);
-                        }
-                        if (res.equals("") || count.get(res) < count.get(str) || (count.get(res) == count.get(str) && res.compareTo(str) > 0)) {
-                            // make sure the right lexi order
-                            res = str;
-                        }
+
+        for(Map.Entry<String,List<Pair<String, Integer>>> entry : mp.entrySet()){
+            List<Pair<String,Integer>> value = entry.getValue();
+            value.sort((a,b) ->a.getValue() - b.getValue());
+        }
+        Map<List<String>,Integer> counter = new HashMap<>();
+        for(Map.Entry<String,List<Pair<String, Integer>>> entry: mp.entrySet()){
+            List<Pair<String, Integer>> userWebsite = entry.getValue();
+            Set<String> s = new HashSet<>();
+            for(int i = 0 ; i < userWebsite.size() ;i++){
+                for(int j = i+1 ; j < userWebsite.size() ;j++){
+                    for(int k = j+1; k < userWebsite.size();k++){
+
+                        List<String> key = new ArrayList<>(Arrays.asList(userWebsite.get(i).getKey(),userWebsite.get(j).getKey(),userWebsite.get(k).getKey()));
+                        if(s.contains(key.toString())) continue;
+                        s.add(key.toString());
+                        counter.putIfAbsent(key,0);
+                        int value = counter.get(key);
+                        counter.put(key,value+1);
                     }
                 }
             }
         }
-        // grab the right answer
-        String[] r = res.split(" ");
-        List<String> result = new ArrayList<>();
-        for (String str : r) {
-            result.add(str);
+        int max = 0;
+        List<String>maxPattern = new ArrayList<>();
+        for(Map.Entry<List<String>,Integer> entry : counter.entrySet()){
+            if(entry.getValue() > max){
+                max = entry.getValue();
+                maxPattern = entry.getKey();
+            }else if (entry.getValue() == max){
+                if(maxPattern.toString().compareTo(entry.getKey().toString()) > 0){
+                    maxPattern = entry.getKey();
+                }
+            }
         }
-        return result;
+        return maxPattern;
+
     }
 }
