@@ -13,8 +13,8 @@ abstract class Node {
 
 class BTNode extends Node{
 
-    private static Set<String> operator = new HashSet<>(Arrays.asList("+","-","*","/"));
- 
+    //private static Set<String> operator = new HashSet<>(Arrays.asList("+","-","*","/"));
+    private static String operators = "+-*/";
     BTNode(String val){
         this.val = val;
     }
@@ -26,7 +26,7 @@ class BTNode extends Node{
     }
     private int DFS(Node root){
         if(root == null) return 0;
-        if(operator.contains(root.val)) 
+        if(operators.contains(root.val)) 
         {
             int leftTreeValue = DFS(root.left);
             int rightTreeValue = DFS(root.right);
