@@ -54,7 +54,8 @@ class BTNode extends Node{
 class TreeBuilder {
     Node buildTree(String[] postfix) {
         Stack<Node> stack = new Stack<>();
-        Set<String> operator = new HashSet<>(Arrays.asList("+","-","*","/"));
+        //Set<String> operator = new HashSet<>(Arrays.asList("+","-","*","/"));
+        String operator = "+-*/";
         for(String s : postfix){
             if(!operator.contains(s)) stack.push(new BTNode(s));
             else{
